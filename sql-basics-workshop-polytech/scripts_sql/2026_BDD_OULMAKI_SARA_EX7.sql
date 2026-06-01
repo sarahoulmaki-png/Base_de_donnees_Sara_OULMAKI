@@ -123,3 +123,4 @@ JOIN streamer s ON st.id_streamer = s.id_streamer
 JOIN creneau c ON st.id_creneau = c.id_creneau
 ORDER BY s.pseudo, st.heure_debut;
 
+

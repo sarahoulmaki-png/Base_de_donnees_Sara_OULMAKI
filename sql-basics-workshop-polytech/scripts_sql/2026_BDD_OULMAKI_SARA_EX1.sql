@@ -57,8 +57,6 @@ CREATE TABLE participation_defi (
     FOREIGN KEY (id_defi)     REFERENCES defi(id_defi)         ON DELETE CASCADE
 );
 
--- Exercice 1 : insertion des données
-
 -- ---------------------------------------------
 -- TABLE STREAMER
 -- Dictionnaire :
