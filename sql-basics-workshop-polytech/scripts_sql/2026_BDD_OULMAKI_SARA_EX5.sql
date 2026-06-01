@@ -47,10 +47,12 @@ WHERE date_fin_effective IS NULL;
 
 -- 4. Supprimer les créneaux passés : Supprimez les créneaux dont la date de fin autorisée est antérieure à aujourd'hui.
 
-DELETE FROM Creneau
-WHERE date_fin_autorisee < CURRENT_DATE;
-
+-- Vérification avant suppression
 SELECT id_creneau, date_debut_autorisee, date_fin_autorisee
 FROM Creneau
+WHERE date_fin_autorisee < CURRENT_DATE;
+
+-- Suppression
+DELETE FROM Creneau
 WHERE date_fin_autorisee < CURRENT_DATE;
 

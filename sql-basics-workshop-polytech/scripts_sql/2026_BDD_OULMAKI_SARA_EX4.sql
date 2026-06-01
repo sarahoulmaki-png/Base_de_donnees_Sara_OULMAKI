@@ -4,7 +4,7 @@
 -- Date : 2026-06-01
 -- ============================================
 
---Nombre total de streams par streamer : Affichez le pseudo et le nombre de streams effectués, même pour les streamers n'ayant aucun stream (nombre = 0). Ordonnez par nombre décroissant.
+--1. Nombre total de streams par streamer : Affichez le pseudo et le nombre de streams effectués, même pour les streamers n'ayant aucun stream (nombre = 0). Ordonnez par nombre décroissant.
 
 SELECT  s.pseudo, COALESCE(COUNT(st.id_stream), 0) AS stream_count
 FROM Streamer s
@@ -12,7 +12,7 @@ LEFT JOIN Stream st ON st.id_streamer = s.id_streamer
 GROUP BY s.pseudo
 ORDER BY stream_count DESC;
 
---Montant total des paliers de défis par état de validation : Affichez si le défi est validé ou pas, et le montant total des paliers pour chaque état.
+--2. Montant total des paliers de défis par état de validation : Affichez si le défi est validé ou pas, et le montant total des paliers pour chaque état.
 
 UPDATE Defi
 SET etat_validation = TRUE

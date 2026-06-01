@@ -88,4 +88,38 @@ FROM stream st
 JOIN streamer s ON st.id_streamer = s.id_streamer
 ORDER BY s.pseudo, st.heure_fin;
 
+-- 4. Affichez un résumé : nombre de streams en retard, durée moyenne de retard
+    -- Combinez les deux requêtes en une seule pour un aperçu complet de la conformité des streams.
+
+-- 4. Résumé : nombre de streams en retard + durée moyenne de retard
+
+SELECT 
+    COUNT(*) AS nb_streams_en_retard,
+    ROUND(AVG(EXTRACT(EPOCH FROM (date_fin_effective - heure_fin)) / 60), 2) AS retard_moyen_minutes
+FROM stream
+WHERE date_fin_effective > heure_fin;
+
+-- Combinaison des deux requêtes (validation créneau + dépassement)
+SELECT 
+    st.titre,
+    s.pseudo,
+    CASE
+        WHEN st.heure_debut >= c.date_debut_autorisee AND st.heure_fin <= c.date_fin_autorisee
+        THEN 'VALIDE'
+        ELSE 'INVALIDE'
+    END AS statut_creneau,
+    CASE
+        WHEN st.date_fin_effective IS NULL THEN 'OK'
+        WHEN st.date_fin_effective <= st.heure_fin THEN 'OK'
+        ELSE 'DEPASSEMENT'
+    END AS statut_depassement,
+    CASE
+        WHEN st.date_fin_effective > st.heure_fin 
+        THEN ROUND(EXTRACT(EPOCH FROM (st.date_fin_effective - st.heure_fin)) / 60)
+        ELSE 0
+    END AS duree_depassement_minutes
+FROM stream st
+JOIN streamer s ON st.id_streamer = s.id_streamer
+JOIN creneau c ON st.id_creneau = c.id_creneau
+ORDER BY s.pseudo, st.heure_debut;
 
